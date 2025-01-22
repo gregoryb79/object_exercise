@@ -11,6 +11,13 @@ function bubbleSort(inputArray: number[]): number[] {
     return array;
 }
 
+
+function AddPerson(employeesList: employee[]): employee[] {
+    const newEmployee = getEmployeeData();
+    employeesList.push(newEmployee);
+    return employeesList;
+}
+
 function getMedian(inputNumbers : number[]) : number {
     
     let numbers = inputNumbers;
