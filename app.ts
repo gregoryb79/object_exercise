@@ -43,6 +43,13 @@ function getEmployeeData() : employee {
 
 }
 
+function addWorker (employeesList : employee []) : employee [] {
+
+    employeesList.push(getEmployeeData());
+
+    return employeesList;
+}
+
 function getSalary (employeesList : employee [], wantedDepartment : string) : number []{
 
     let salary : number [] = [];
@@ -75,12 +82,60 @@ function salaryStatistics (employeesList : employee [], wantedDepartment : strin
 
 }
 
-function printWorkers(employeesList : employee []){
+function getStatistics (employeesList : employee []) {
+
+    let listOfDepartments = "";
+    const uniqueDepartments = Array.from( new Set(employeesList.map(employee => employee.department)));
+
+    for (let i = 0; i < uniqueDepartments.length; i++){
+        listOfDepartments = listOfDepartments + `${i+1}. ${uniqueDepartments[i]}\n`;
+    }
+
+    let userInput = prompt(listOfDepartments + `Statistics for which department do you want?\n
+                                                use "all" for all departments combined.\n
+                                                Cancel to return to main menu.`);
+    while (userInput !== null){
+
+        salaryStatistics(employeesList,userInput);
+
+        userInput = prompt(listOfDepartments + `Statistics for which department do you want?\n
+            use "all" for all departments combined.\n
+            Cancel to return to main menu.`);
+
+    }
+
+
+}
+
+function printWorkers(employeesList : employee []) : string {
 
     let listOfWorkers = "";
+    let counter = 1;
     for(const worker of employeesList){
-        listOfWorkers = listOfWorkers + worker.name + "\n";
+        listOfWorkers = listOfWorkers +  `${counter}.  ${worker.name}\n`;
+        counter++;
     }
+
+    return listOfWorkers;
+}
+
+function removeWorker (employeesList : employee []) : employee [] {
+
+    let userInput = prompt(`${printWorkers(employeesList)} Who do you want to remove?\n
+                            Cancel to return to Menu.`);
+    while (userInput !== null) {
+        const removeLocation = Number(userInput);
+        if ((!isNaN(removeLocation)) && (removeLocation > 0) && (removeLocation < employeesList.length)){
+            employeesList.splice(removeLocation-1,1);
+        } else {
+            alert("ERROR. Plese enter number of the worker you want to remove from the list.")
+        }
+
+        userInput = prompt(`${printWorkers(employeesList)} Who do you want to remove?\n
+                            Cancel to return to Menu.`);
+    }
+
+    return employeesList;
 }
 
 type employee = {
@@ -93,7 +148,7 @@ type employee = {
 
 function workersRecordsystem(){
 
-    alert("Welcome to the Workers Record system");
+    alert("Welcome to the Workers Record System");
     
     let userInput = prompt(`What would you like to do\n
         1. Add worker record\n
@@ -102,7 +157,39 @@ function workersRecordsystem(){
         4. Get statistics\n
         "Cancel" to exit the system.`);
 
-    let employeesList : employee [] = [];
+    let employeesList : employee [] = [
+        { name: "Alice", age: 25, department: "HR", salary: 50000 },
+        { name: "Bob", age: 30, department: "IT", salary: 60000 },
+        { name: "Charlie", age: 35, department: "HR", salary: 55000 },
+        { name: "Daisy", age: 40, department: "Finance", salary: 70000 },
+        { name: "Eve", age: 28, department: "IT", salary: 62000 },
+        { name: "Frank", age: 33, department: "Marketing", salary: 48000 },
+        { name: "Grace", age: 45, department: "Operations", salary: 80000 },
+        { name: "Hank", age: 38, department: "Finance", salary: 67000 },
+        { name: "Ivy", age: 29, department: "IT", salary: 53000 },
+        { name: "Jack", age: 32, department: "HR", salary: 54000 },
+        { name: "Karen", age: 41, department: "Marketing", salary: 71000 },
+        { name: "Leo", age: 27, department: "Operations", salary: 45000 },
+        { name: "Mona", age: 50, department: "Finance", salary: 96000 },
+        { name: "Nancy", age: 26, department: "HR", salary: 52000 },
+        { name: "Oscar", age: 36, department: "IT", salary: 64000 },
+        { name: "Paul", age: 31, department: "Marketing", salary: 56000 },
+        { name: "Quinn", age: 39, department: "Finance", salary: 75000 },
+        { name: "Rachel", age: 34, department: "Operations", salary: 59000 },
+        { name: "Steve", age: 42, department: "HR", salary: 86000 },
+        { name: "Tina", age: 28, department: "Marketing", salary: 58000 },
+        // { name: "Uma", age: 37, department: "Finance", salary: 68000 },
+        // { name: "Victor", age: 35, department: "IT", salary: 70000 },
+        // { name: "Wendy", age: 44, department: "Operations", salary: 89000 },
+        // { name: "Xander", age: 30, department: "Marketing", salary: 52000 },
+        // { name: "Yara", age: 29, department: "HR", salary: 49000 },
+        // { name: "Zane", age: 40, department: "IT", salary: 78000 },
+        // { name: "Liam", age: 43, department: "Finance", salary: 84000 },
+        // { name: "Olivia", age: 24, department: "Operations", salary: 47000 },
+        // { name: "Emma", age: 32, department: "Marketing", salary: 61000 },
+        // { name: "Noah", age: 27, department: "IT", salary: 58000 },
+      ];
+
     while (userInput !== null){
 
         switch (userInput) {
